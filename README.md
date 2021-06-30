@@ -14,9 +14,11 @@ Data:
 
 7) Summarized PDO NPGO.csv: Estimates of NPGO and PDO for Oct-March and April-September. April through September estimates are lagged by a year (i.e., for the previous year), because the response variables from the disease surveys were taken in late March and early April.
 
-8) alk_Cordova_fishmethods.txt: Age length keys for Prince William Sound for the years 2007-2019, calculated using the fishmethods package (see attached R code). 
+8) SummarizedUpwelling.csv: Mean upwelling indices for PWS and Sitka Sound for March-October and April-September
 
-9) alk_Sitka_fishmethods.txt: Age length keys for Sitka Sound for the years 2007-2019, calculated using the fishmethods package (see attached R code). 
+9) alk_Cordova_fishmethods.txt: Age length keys for Prince William Sound for the years 2007-2019, calculated using the fishmethods package (see attached R code). 
+
+10) alk_Sitka_fishmethods.txt: Age length keys for Sitka Sound for the years 2007-2019, calculated using the fishmethods package (see attached R code). 
 
 Code:
 1) Age-Length analysis Cordova_fishmethods.R: Code to create and validate an age-length key for PWS Pacific herring using age-length data from PWS. Note that code contains a link to access online data
