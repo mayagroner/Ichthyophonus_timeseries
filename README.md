@@ -1,5 +1,5 @@
 # Ichthyophonus_timeseries
-Data and code related to manuscript submitted to ICES J of Marine Science 2021
+Data and code related to manuscript titled: Elevated prevalence of Ichthyopohnus sp. in a collapsed population of Pacific herring and submitted to ICES J of Marine Science 2021
 
 Data: 
 1) AK Herring disease samples for R: From yearly disease surveillance conducted in Sitka Sound and Prince William Sound, led by Paul Hershberger at the USGS Marrowstone Marine Field Station
