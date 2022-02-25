@@ -1,12 +1,10 @@
 #Calculate yearly prevalence for each site
 require(readr)
-Prev_at_age <- read_csv("Prevalence_age_site.csv")##THere is something buggy in this dataset
-Mature_at_age <- read_csv("Ichthyophonus/Mature_prop_at_age_PWS_Sitka.csv")
+Prev_at_age <- read_csv("Prevalence_age_site.csv")
+Mature_at_age <- read_csv("Mature_prop_at_age_PWS_Sitka.csv")
 
 PrevMat<-merge(Prev_at_age, Mature_at_age, by=c('Site', 'Year', 'Age'))
 
-
-#########START HERE########################
 PrevMat$PrevalenceSD<-sqrt(PrevMat$Prevalence*(1-PrevMat$Prevalence)/PrevMat$SampleSize)
 PrevMat$PropPrev<-PrevMat$Prevalence*PrevMat$Prop_at_age
 PrevMat$PropPrevSD<-sqrt(PrevMat$PropPrev*(1-PrevMat$PropPrev)/PrevMat$SampleSize)
