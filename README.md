@@ -27,7 +27,7 @@ Code:
 
 3) Age comparison disease surveillance data.R: Compares scale annuli ages of Pacific herring collected for disease surveillance in PWS with those predicted by the PWS Age-length key using Bland-Altman methods
 
-4) Population Prevalence.R: Code to generate estimates of population-level Ichthyophonus prevalence in Sitka Sound and PWS from 2007-2019. Also calculates age-length relationships for each year class over time. 
+4) Population Prevalence.R: Code to generate age and sample-based estimates of population-level Ichthyophonus prevalence in Sitka Sound and PWS from 2007-2019, relationship between age-based prevalence and mean age of mature population, and proportion of mature population with high-density infections.
 
 5) GLMMs.R: Code to conduct generalized linear mixed models to identify environmental and demographic correlates of Ichthyophonus sp. infection prevalence and severity
 
