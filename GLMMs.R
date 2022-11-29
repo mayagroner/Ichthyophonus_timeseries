@@ -116,9 +116,9 @@ AllHerringSampSize<-ddply(AllHerringAL,  .(Year, Site),summarize, Age3SS=sum(Age
 #Wide to Long Form
 AllHerringSSLong<-gather(AllHerringSampSize, Age, SampleSize, Age3SS:Age7SS, factor_key=TRUE)
 AllHerringSSLong$Age<-ifelse(AllHerringSSLong$Age=='Age3SS', 3,
-                               ifelse(AllHerringSSLong$Age=='Age4SS', 4, 
-                                      ifelse(AllHerringSSLong$Age=='Age5SS', 5,
-                                             ifelse(AllHerringSSLong$Age=='Age6SS', 6, 7))))
+                             ifelse(AllHerringSSLong$Age=='Age4SS', 4, 
+                                    ifelse(AllHerringSSLong$Age=='Age5SS', 5,
+                                           ifelse(AllHerringSSLong$Age=='Age6SS', 6, 7))))
 
 
 
@@ -133,13 +133,13 @@ AllHerringPrevLong$Prevalence<-ifelse(AllHerringPrevLong$SampleSize<5, NA, AllHe
 AllHerringPrevLong$SampleSize<-signif(AllHerringPrevLong$SampleSize, digits = 3)
 
 AllHerringPrevLong$Location<-ifelse(AllHerringPrevLong$Site=='Sitka', 'Sitka Sound', 
-                         ifelse(AllHerringPrevLong$Site=='PWS', "Prince William Sound", AllHerringPrevLong$Site))
+                                    ifelse(AllHerringPrevLong$Site=='PWS', "Prince William Sound", AllHerringPrevLong$Site))
 
 #Graph prevalence over time by age
 
 PrevAge<-ggplot(AllHerringPrevLong, aes(x=as.numeric(Year), y=Prevalence, color=Cohort))+geom_point()+geom_smooth(method='lm', se=FALSE)
 PrevAge+facet_grid(Location~.)+xlab('Sampling year')+ylab('Infection prevalence')+theme_bw()+ theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-                                                            panel.background = element_blank())+ labs(color = "Year class")
+                                                                                                    panel.background = element_blank())+ labs(color = "Year class")
 
 
 #Assign an age to each sample
@@ -151,17 +151,18 @@ AllHerringAL$Age34567plus<-AllHerringAL$Age3+AllHerringAL$Age4+AllHerringAL$Age5
 
 AllHerringAL$Random<-runif(length(AllHerringAL$Age3))
 AllHerringAL$AssignedAge<-ifelse(is.na(AllHerringAL$Age34567plus),NA, 
-                              ifelse(AllHerringAL$Random<AllHerringAL$Age3, 3,
-                                  ifelse(AllHerringAL$Random<AllHerringAL$Age34, 4,
-                                      ifelse(AllHerringAL$Random<AllHerringAL$Age345, 5,
-                                          ifelse(AllHerringAL$Random<AllHerringAL$Age3456, 6, 7)))))
+                                 ifelse(AllHerringAL$Random<AllHerringAL$Age3, 3,
+                                        ifelse(AllHerringAL$Random<AllHerringAL$Age34, 4,
+                                               ifelse(AllHerringAL$Random<AllHerringAL$Age345, 5,
+                                                      ifelse(AllHerringAL$Random<AllHerringAL$Age3456, 6, 7)))))
 
 
-AllHerringALSev<-ddply(AllHerringAL, .(Year, Site, AssignedAge), summarize, Severity=mean(PercentInfected, na.rm=TRUE), SeveritySD=sd(PercentInfected, na.rm=TRUE), SampleSize=length(PercentInfected[!is.na(PercentInfected)]))
+AllHerringAL_highdens<-AllHerringAL[AllHerringAL$PercentInfected>0,]
+AllHerringALSev<-ddply(AllHerringAL_highdens, .(Year, Site, AssignedAge), summarize, Severity=mean(PercentInfected, na.rm=TRUE), SeveritySD=sd(PercentInfected, na.rm=TRUE), SampleSize=length(PercentInfected[!is.na(PercentInfected)]))
 AllHerringALSev$Cohort<-AllHerringALSev$Year-AllHerringALSev$AssignedAge 
 AllHerringALSev$Age<-as.factor(AllHerringALSev$AssignedAge)
 AllHerringALSev$Cohort<-as.factor(AllHerringALSev$Cohort)
-
+AllHerringALSev<-AllHerringALSev[!is.na(AllHerringALSev$Site),]
 #ddply(AllHerringALSev, .(Site), summarize, ssTotal=sum(SampleSize, na.rm=TRUE))
 AllHerringALSev$Location<-ifelse(AllHerringALSev$Site=='PWS', 'Prince William Sound',
                                  ifelse(AllHerringALSev$Site=='Sitka', 'Sitka Sound', AllHerringALSev$Site))
@@ -170,9 +171,10 @@ AllHerringALSev$Location<-ifelse(AllHerringALSev$Site=='PWS', 'Prince William So
 pSev<-ggplot(AllHerringALSev, aes(x=Year, y=Severity, fill=Cohort))+geom_bar(stat='identity')+facet_grid(Cohort~Site)
 pSev+geom_text(aes(label=SampleSize), size=3, vjust=-.25)
 
-pSev4<-ggplot(AllHerringALSev, aes(x=(as.numeric(Year)), y=Severity, color=Cohort))+geom_point(stat='identity')+geom_smooth(method='lm', se=FALSE)+facet_grid(Location~.)
+pSev4<-ggplot(AllHerringALSev, aes(x=(as.numeric(Year)), y=Severity, color=Cohort))+geom_point(stat='identity', aes(size=SampleSize))+geom_smooth(aes(weight=SampleSize),method='lm', se=FALSE)+facet_grid(Location~.)+   
+  scale_size_continuous(name="Number of Fish")
 pSev4+theme_bw()+xlab('Sampling year')+ theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-                                                                                          panel.background = element_blank())+ labs(color = "Year class")+ylab('Infection intensity') +scale_x_continuous(breaks=seq(2009, 2019, 2))+ xlim(2009, 2019)##+geom_text(aes(label=SampleSize), size=3, vjust=-.25, color='black')
+                                              panel.background = element_blank())+ labs(color = "Year class")+ylab('Parasite density') +scale_x_continuous(breaks=seq(2009, 2019, 2))+ylim(0,0.015)##+geom_text(aes(label=SampleSize), size=3, vjust=-.25, color='black')
 
 #No strong correlations between severity and prevalence
 names(AllHerringALSev)[names(AllHerringALSev=="AssignedAge")]<-'Age'
@@ -236,7 +238,7 @@ AllHerringALInfected<-AllHerringAL[AllHerringAL$IchFinal==1,]
 AllHerringALInfected$Symptomatic<-ifelse(is.na(AllHerringALInfected$VentricleArea),NA,
                                          ifelse(is.na(AllHerringALInfected$PercentInfected), NA, 
                                                 ifelse(AllHerringALInfected$PercentInfected==0,0, 1)))
-                                                
+
 AllHerringALInfected<-AllHerringALInfected[!is.na(AllHerringALInfected$Year),]
 AllHerringALInfected<-AllHerringALInfected[!is.na(AllHerringALInfected$Symptomatic),]
 
