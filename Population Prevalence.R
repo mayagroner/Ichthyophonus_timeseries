@@ -50,7 +50,7 @@ p3
 y_title2 <- expression(paste("Proportion of Pacific herring infected with ", italic("Ichthyophonus sp.")," that are symptomatic"))
 PrevMat$PropSymptomatic<-ifelse(PrevMat$SPrevalence==0, 0, PrevMat$SPrevalence/(PrevMat$Prevalence-PrevMat$ASUnknown)*PrevMat$Prop_at_age) 
 
-PrevMatS_Sum<-ddply(PrevMat, .(Site, Year), summarize, PrevalenceS=sum(PropSymptomatic, na.rm=TRUE), PrevalenceU=sum(ASUnknown, na.rm=TRUE), PrevCI=(sqrt(sum(PropPrevCI_sq))))
+PrevMatS_Sum<-ddply(PrevMat, .(Site, Year), summarize, PrevalenceS=sum(PropSymptomatic, na.rm=TRUE), PrevCI=(sqrt(sum(PropPrevCI_sq))))
 PrevMatS_Sum$PrevalenceS<-ifelse(PrevMatS_Sum$PrevalenceS==0, NA, PrevMatS_Sum$PrevalenceS)#remove 0s, these are cases where symptoms were not quantified
 PrevMatS_Sum$PrevSE<-PrevMatS_Sum$PrevCI/1.96
 PrevMatS_Sum$LowerSE<-ifelse(PrevMatS_Sum$PrevalenceS-PrevMatS_Sum$PrevSE==0, 0, PrevMatS_Sum$PrevalenceS-PrevMatS_Sum$PrevSE)
