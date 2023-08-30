@@ -24,9 +24,9 @@ PrevMat_Sum$PrevSE<-PrevMat_Sum$PrevCI/1.96
 p<-ggplot(PrevMat_Sum, aes(x=Year, y=Prevalence, color=Site))+geom_point()+geom_line(size=1)+ylim(0, 0.65)+
   geom_ribbon(aes(ymin=Prevalence-PrevSE, ymax=Prevalence+PrevSE, fill=Site), colour=NA, alpha=0.1)
 
-p<-p+theme_bw()+ylab("Age-based Ichthyophonus sp. prevalence \nestimate for mature Pacific herring")+ theme(text = element_text(size = 8)) +  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+geom_smooth(method='lm', se=FALSE, linetype=2)+ theme(legend.position='none' )+ labs(tag = "B")+
+p<-p+theme_bw()+ylab("Age-based Ichthyophonus sp. \nprevalence estimate for \nmature Pacific herring")+ theme(text = element_text(size = 8)) +  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+geom_smooth(method='lm', se=FALSE, linetype=2)+ theme(legend.position='none' )+ labs(tag = "B")+
   theme(plot.tag = element_text(),
-        plot.tag.position = c(0.1, 0.94))
+        plot.tag.position = c(0.15, 0.94))+ theme(text = element_text(size = 10)) 
 
 p
 
@@ -39,10 +39,10 @@ PrevMat_Sum_Sample$PrevalenceSampSE<-sqrt((PrevMat_Sum_Sample$PrevalenceSamp*(1-
 p3<-ggplot(PrevMat_Sum_Sample, aes(x=Year, y=PrevalenceSamp, color=Site))+geom_point()+geom_line(size=1)+
   ylim(0, 0.65)+geom_ribbon(aes(ymin=PrevalenceSamp-PrevalenceSampSE, ymax=PrevalenceSamp+PrevalenceSampSE, fill=Site), colour=NA, alpha=0.1)
 
-p3<-p3+theme_bw()+ylab("Ichthyophonus sp. prevalence in mature \nPacific herring sample ")+ theme(text = element_text(size = 8)) +  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+geom_smooth(method='lm', se=FALSE, linetype=2)+
+p3<-p3+theme_bw()+ylab("Ichthyophonus sp. prevalence\n in mature Pacific herring \nsample ")+ theme(text = element_text(size = 8)) +  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+geom_smooth(method='lm', se=FALSE, linetype=2)+
   theme(legend.position = 'none')+ labs(tag = "A")+
   theme(plot.tag = element_text(),
-        plot.tag.position = c(0.1, 0.94))
+        plot.tag.position = c(0.15, 0.94))+ theme(text = element_text(size = 10)) 
 
 p3
 #Graph proportion of Prevalent that are symptomatic
@@ -58,9 +58,9 @@ PrevMatS_Sum$LowerSE<-ifelse(PrevMatS_Sum$PrevalenceS-PrevMatS_Sum$PrevSE==0, 0,
 PrevMatS_Sum<-PrevMatS_Sum[!is.na(PrevMatS_Sum$PrevalenceS),]
 p1<-ggplot(PrevMatS_Sum, aes(x=Year, y=PrevalenceS, color=Site))+geom_line(size=1)+geom_ribbon(aes(ymin=LowerSE, ymax=PrevalenceS+PrevSE, fill=Site), colour=NA, alpha=0.1)
 
-p1<-p1+theme_bw()+ylab("Proportion of mature infected Pacific herring \nwith high Ichthyophonus sp. infection") + theme(text=element_text(size = 8), panel.grid.major = element_blank(), panel.grid.minor = element_blank())+geom_point()+geom_smooth(method='lm', se=FALSE, linetype=2)+ theme(legend.position='none')+ scale_x_continuous(breaks=seq(2009,2019,2))+ labs(tag = "D")+
+p1<-p1+theme_bw()+ylab("Proportion of mature \ninfected Pacific herring with \nhigh-occupancy infections") + theme(text=element_text(size = 10), panel.grid.major = element_blank(), panel.grid.minor = element_blank())+geom_point()+geom_smooth(method='lm', se=FALSE, linetype=2)+ theme(legend.position='none')+ scale_x_continuous(breaks=seq(2009,2019,2))+ labs(tag = "D")+
   theme(plot.tag = element_text(),
-        plot.tag.position = c(0.1, 0.94))+ scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.2))
+        plot.tag.position = c(0.15, 0.94))+ scale_y_continuous(limits=c(0,1), breaks=seq(0,1,0.2))
 p1
 #Calculate mean age for each year
 Mature_at_age$WeightedAge<-Mature_at_age$Age*Mature_at_age$Prop_at_age
@@ -72,12 +72,12 @@ Mature_at_age_Sum$Site<-ifelse(Mature_at_age_Sum$Site=='PWS', 'Prince William So
 PrevMat_Sum<-merge(PrevMat_Sum, Mature_at_age_Sum, by=c('Year', 'Site'))
 Mature_at_age_Sum<-Mature_at_age_Sum[!is.na(Mature_at_age_Sum$Year),]
 
-p2<-ggplot(PrevMat_Sum, aes(x=MeanAge, y=Prevalence, color=Site))+geom_point(size=3)+geom_smooth(method='lm', aes(fill=Site), alpha=.1, linetype=2)+xlab('Mean age of mature population')+ylab("Age-based Ichthyophonus sp. prevalence \nin mature Pacific herring")+ theme(legend.position='none')
-p2<-p2+theme_bw()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+ theme(legend.position='none')
+p2<-ggplot(PrevMat_Sum, aes(x=MeanAge, y=Prevalence, color=Site))+geom_point(size=3)+geom_smooth(method='lm', aes(fill=Site), alpha=.1, linetype=2)+xlab('Mean age of mature population')+ylab("Age-based Ichthyophonus sp. \nprevalence in mature \nPacific herring")+ theme(legend.position='none')
+p2<-p2+theme_bw()+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+ theme(legend.position='none')+ theme(text = element_text(size = 10)) 
 p2<-p2+geom_errorbar(aes(ymin=ifelse(Prevalence-PrevSE<0, 0, Prevalence-PrevSE), ymax=Prevalence+PrevSE), width=.1,
                      position=position_dodge(0.05))+ labs(tag = "C")+
   theme(plot.tag = element_text(),
-        plot.tag.position = c(0.1, 0.94), text=element_text(size = 8),)
+        plot.tag.position = c(0.15, 0.94), text=element_text(size = 8),)+ theme(text = element_text(size = 10)) 
 p2
 
 require(gridExtra)
