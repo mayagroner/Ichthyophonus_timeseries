@@ -57,23 +57,23 @@ Weighted_ALK<-rbind(Weighted_AL_Key_PWS, Weighted_AL_Key_Sitka)
 library(tidyr)
 Weighted_AL_long<-gather(Weighted_ALK, Age, ProbAge, Age4:Age3_minus)
 Weighted_AL_long$Bin<-Weighted_AL_long$Bin/10
-Weighted_AL_long$Age<-ifelse(Weighted_AL_long$Age=='Age3_minus', 3, 
-                             ifelse(Weighted_AL_long$Age=='Age4', 4, 
-                                    ifelse(Weighted_AL_long$Age=='Age5', 5, 
-                                           ifelse(Weighted_AL_long$Age=='Age6', 6, 7))))
+Weighted_AL_long$Age<-ifelse(Weighted_AL_long$Age=='Age3_minus', '3', 
+                             ifelse(Weighted_AL_long$Age=='Age4', '4', 
+                                    ifelse(Weighted_AL_long$Age=='Age5', '5', 
+                                           ifelse(Weighted_AL_long$Age=='Age6', '6', '7'))))
 Weighted_AL_long$Cohort<-Weighted_AL_long$Year-as.numeric(Weighted_AL_long$Age)
 Weighted_AL_long_Sitka<-Weighted_AL_long[Weighted_AL_long$Site=='Sitka',]
 Weighted_AL_long_PWS<-Weighted_AL_long[Weighted_AL_long$Site=='PWS',]
 
-##Graph Age length key
-p<-ggplot(Weighted_AL_long_Sitka, aes(x=Bin, y=ProbAge, fill=as.factor(Cohort)))+geom_col()+facet_grid(Year~Age)+xlim(14, 28)+ scale_y_continuous(breaks=seq(0,1,.5))
-p<-p+xlab('Fork Length (cm)')+ylab('Probability')+theme_bw()+ theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+ scale_fill_discrete(name = "Year class", l=40, c=35)+ theme(text = element_text(size = 8))+ labs(title = "A: Sitka Sound age-length key")
 
-p1<-ggplot(Weighted_AL_long_PWS, aes(x=Bin, y=ProbAge, fill=as.factor(Cohort)))+geom_col()+facet_grid(Year~Age)+xlim(14, 28)+ scale_y_continuous(breaks=seq(0,1,.5))
-p1<-p1+xlab('Fork Length (cm)')+ylab('Probability')+theme_bw()+ theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+ scale_fill_discrete(name = "Year class", l=40, c=35)+ theme(text = element_text(size = 8))+labs(title = "B: Prince William Sound age-length key")
+p<-ggplot(Weighted_AL_long_Sitka, aes(x=Bin, y=ProbAge, fill=as.factor(Cohort)))+geom_col()+facet_grid(Year~Age, labeller=labeller(Age=c('3'="\u2264 3", "4" = "4", "5"="5", "6"="6", "7"="\u2265 7")))+xlim(14, 28)+ scale_y_continuous(breaks=seq(0,1,.5))
+p<-p+xlab('Fork Length (cm)')+ylab('Probability')+theme_bw()+ theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+ scale_fill_discrete(name = "Year class")+ theme(text = element_text(size = 10))+ labs(title = "A: Sitka Sound age-length key")
+
+p1<-ggplot(Weighted_AL_long_PWS, aes(x=Bin, y=ProbAge, fill=as.factor(Cohort)))+geom_col()+facet_grid(Year~Age, labeller=labeller(Age=c('3'="\u2264 3", "4" = "4", "5"="5", "6"="6", "7"="\u2265 7")))+xlim(14, 28)+ scale_y_continuous(breaks=seq(0,1,.5))
+p1<-p1+xlab('Fork Length (cm)')+ylab('Probability')+theme_bw()+ theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+ scale_fill_discrete(name = "Year class")+ theme(text = element_text(size = 10))+labs(title = "B: Prince William Sound age-length key")
 
 require(gridExtra)
-grid.arrange(p, p1)
+grid.arrange(p, p1, nrow=1)
 
 
 ###merge AL Key with disease data
